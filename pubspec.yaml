@@ -1,0 +1,48 @@
+name: avtorepair
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.7
+  flutter_map: ^5.0.0
+  latlong2:
+  http: ^1.1.0
+  sqflite: ^2.3.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/temp/
+    - assets/svg/
+
+  fonts:
+  - family: Urbanist
+    fonts:
+      - asset: assets/fonts/Urbanist-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Urbanist-Regular.ttf
+      - asset: assets/fonts/Urbanist-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Urbanist-Semibold.ttf
+        weight: 600
+      - asset: assets/fonts/Urbanist-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Urbanist-ExtraBold.ttf
+        weight: 800
+      - asset: assets/fonts/Urbanist-Black.ttf
+        weight: 900
+      
