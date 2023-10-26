@@ -1,3 +1,4 @@
+import 'package:avtorepair/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppText {
@@ -12,6 +13,7 @@ class AppText {
   );
 
   static const subtitle1 = TextStyle(
+    color: AppColors.black,
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );
@@ -27,11 +29,13 @@ class AppText {
   );
 
   static const body1 = TextStyle(
-    fontSize: 14,
+    color: AppColors.black,
+    fontSize: 18,
     fontWeight: FontWeight.w500,
   );
 
   static const body2 = TextStyle(
+    color: AppColors.black,
     fontSize: 14,
     fontWeight: FontWeight.w400,
   );

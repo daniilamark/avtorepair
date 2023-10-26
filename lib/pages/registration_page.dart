@@ -1,9 +1,52 @@
+import 'dart:convert';
+import 'package:avtorepair/config/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/config/app_strings.dart';
+import 'package:http/http.dart' as http;
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
+
+  @override
+  State<RegistrationPage> createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  //bool _isNotValidate = false;
+
+  void registerUser() async {
+    print('object');
+    if (nameController.text.isNotEmpty &&
+        lastNameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      var regBody = {
+        "name": nameController.text,
+        "last_name": lastNameController.text,
+        "email": emailController.text,
+        "password": passwordController.text
+      };
+      var response = await http.post(Uri.parse(registration),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(regBody));
+      var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse['status']);
+      if (jsonResponse['status']) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      } else {
+        print('SomeThing Went Wrong');
+      }
+    } else {
+      setState(() {
+        //_isNotValidate = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +60,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 const Spacer(),
                 const Text(
-                  AppStrings.helloWelcome,
+                  AppStrings.registration,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
@@ -28,15 +71,17 @@ class LoginPage extends StatelessWidget {
                   height: 16,
                 ),
                 const Text(
-                  AppStrings.loginToContinue,
+                  AppStrings.registrationToContinue,
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
                 const Spacer(),
                 TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
-                    hintText: AppStrings.usermail,
+                    hintText: AppStrings.username,
+                    //errorText: _isNotValidate ? "Введите имя!" : null,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -50,8 +95,10 @@ class LoginPage extends StatelessWidget {
                   height: 16,
                 ),
                 TextField(
+                  controller: lastNameController,
                   decoration: InputDecoration(
-                    hintText: AppStrings.userpassword,
+                    hintText: AppStrings.userlastname,
+                    //errorText: _isNotValidate ? "Введите фамилию!" : null,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -61,18 +108,40 @@ class LoginPage extends StatelessWidget {
                     fillColor: Colors.white.withOpacity(0.5),
                   ),
                 ),
-                // Align(
-                //   alignment: Alignment.centerRight,
-                //   child: TextButton(
-                //     onPressed: () {
-                //       print("Forgot clicked");
-                //     },
-                //     style: TextButton.styleFrom(
-                //       foregroundColor: Colors.white,
-                //     ),
-                //     child: const Text(AppStrings.forgotPassword),
-                //   ),
-                // ),
+                const SizedBox(
+                  height: 16,
+                ),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    hintText: AppStrings.usermail,
+                    //errorText: _isNotValidate ? "Введите e-mail!" : null,
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.5),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    hintText: AppStrings.userpassword,
+                    //errorText: _isNotValidate ? "Введите пароль!" : null,
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.5),
+                  ),
+                ),
                 const SizedBox(
                   height: 32,
                 ),
@@ -80,10 +149,11 @@ class LoginPage extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        AppRoutes.main,
-                        (Route<dynamic> route) => false,
-                      );
+                      registerUser();
+                      // Navigator.of(context).pushNamedAndRemoveUntil(
+                      //   AppRoutes.main,
+                      //   (Route<dynamic> route) => false,
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -105,7 +175,7 @@ class LoginPage extends StatelessWidget {
                         SizedBox(
                           width: 8,
                         ),
-                        Text(AppStrings.login),
+                        Text(AppStrings.signup),
                       ],
                     ),
                   ),
@@ -116,7 +186,7 @@ class LoginPage extends StatelessWidget {
                 Row(
                   children: [
                     const Text(
-                      AppStrings.dontHaveAccount,
+                      AppStrings.haveAccount,
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -124,13 +194,13 @@ class LoginPage extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.registration);
+                            .pushReplacementNamed(AppRoutes.login);
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.amber,
                       ),
                       child: const Text(
-                        AppStrings.signup,
+                        AppStrings.login,
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         ),

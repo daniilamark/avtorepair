@@ -2,7 +2,7 @@ import 'package:avtorepair/config/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/styles/app_colors.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Urbanist',
         scaffoldBackgroundColor: AppColors.background,

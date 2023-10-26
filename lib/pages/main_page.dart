@@ -1,10 +1,12 @@
+import 'package:avtorepair/pages/refueling_page.dart';
+import 'package:avtorepair/pages/routing_page.dart';
+import 'package:avtorepair/pages/service_page.dart';
+import 'package:avtorepair/pages/statistics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:avtorepair/components/bottom_navigation_item.dart';
 import 'package:avtorepair/config/app_icons.dart';
-import 'package:avtorepair/pages/home_page.dart';
-import 'package:avtorepair/pages/messages_page.dart';
-import 'package:avtorepair/pages/profile_page.dart';
+import 'package:avtorepair/pages/car_profile_page.dart';
 import 'package:avtorepair/styles/app_colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -15,7 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  Menus currentIndex = Menus.home;
+  Menus currentIndex = Menus.carProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +37,34 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  // PAGES CLASSES
   final pages = [
-    HomePage(),
-    const Center(
-      child: Text('Favorite'),
-    ),
-    const Center(
-      child: Text('Add Post'),
-    ),
-    const MessagesPage(),
-    const ProfilePage(),
+    //авто
+    //заправка
+    //сервис
+    //маршруты
+    //статистика
+
+    //car_profile
+    //refueling
+    //service
+    //routing
+    //statistics
+
+    const CarProfilePage(),
+    const RefuelingPage(),
+    const ServicePage(),
+    const RoutingPage(),
+    const StatisticsPage(),
   ];
 }
 
 enum Menus {
-  home,
-  favorite,
-  add,
-  messages,
-  user,
+  carProfile,
+  refueling,
+  service,
+  routing,
+  statistics,
 }
 
 class MyBottomNavigation extends StatelessWidget {
@@ -88,35 +99,35 @@ class MyBottomNavigation extends StatelessWidget {
                 children: [
                   Expanded(
                     child: BottomNavigationItem(
-                      onPressed: () => onTap(Menus.home),
+                      onPressed: () => onTap(Menus.carProfile),
                       icon: AppIcons.icHome,
                       current: currentIndex,
-                      name: Menus.home,
+                      name: Menus.carProfile,
                     ),
                   ),
                   Expanded(
                     child: BottomNavigationItem(
-                      onPressed: () => onTap(Menus.favorite),
-                      icon: AppIcons.icFavorite,
+                      onPressed: () => onTap(Menus.refueling),
+                      icon: AppIcons.icRefill,
                       current: currentIndex,
-                      name: Menus.favorite,
+                      name: Menus.refueling,
                     ),
                   ),
                   const Spacer(),
                   Expanded(
                     child: BottomNavigationItem(
-                      onPressed: () => onTap(Menus.messages),
-                      icon: AppIcons.icMessage,
+                      onPressed: () => onTap(Menus.routing),
+                      icon: AppIcons.icLocation,
                       current: currentIndex,
-                      name: Menus.messages,
+                      name: Menus.routing,
                     ),
                   ),
                   Expanded(
                     child: BottomNavigationItem(
-                      onPressed: () => onTap(Menus.user),
-                      icon: AppIcons.icUser,
+                      onPressed: () => onTap(Menus.statistics),
+                      icon: AppIcons.icStatistics,
                       current: currentIndex,
-                      name: Menus.user,
+                      name: Menus.statistics,
                     ),
                   ),
                 ],
@@ -128,7 +139,7 @@ class MyBottomNavigation extends StatelessWidget {
             right: 0,
             top: 0,
             child: GestureDetector(
-              onTap: () => onTap(Menus.add),
+              onTap: () => onTap(Menus.service),
               child: Container(
                 width: 64,
                 height: 64,

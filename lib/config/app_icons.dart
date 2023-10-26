@@ -11,4 +11,9 @@ class AppIcons {
   static const icAdd = '${_svg}ic_add.svg';
   static const icMessage = '${_svg}ic_messages.svg';
   static const icUser = '${_svg}ic_user.svg';
+
+  static const icRefill = '${_svg}ic_refill.svg';
+  static const icMaps = '${_svg}ic_maps.svg';
+  static const icStatistics = '${_svg}ic_stati.svg';
+  static const icFix = '${_svg}ic_fix.svg';
 }

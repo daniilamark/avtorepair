@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCIajI6iYmM8rqkhbAPkhFbVQynlWN1JHM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>619425420948</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.avtorepair</string>
+	<key>PROJECT_ID</key>
+	<string>avtorepair-daniilamark</string>
+	<key>STORAGE_BUCKET</key>
+	<string>avtorepair-daniilamark.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:619425420948:ios:528a2718926e84905f8681</string>
+</dict>
+</plist>

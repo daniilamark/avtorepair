@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:avtorepair/components/toolbar.dart';
-import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/config/app_strings.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:avtorepair/config/app_icons.dart';
 
-class NearbyPage extends StatelessWidget {
-  const NearbyPage({super.key});
+class RoutingPage extends StatelessWidget {
+  const RoutingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Toolbar(
-        title: AppStrings.nearby,
+        title: AppStrings.routingMaps,
       ),
       body: FlutterMap(
         options: MapOptions(

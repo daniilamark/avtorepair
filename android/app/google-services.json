@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "619425420948",
+    "project_id": "avtorepair-daniilamark",
+    "storage_bucket": "avtorepair-daniilamark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619425420948:android:35d87321df4c08395f8681",
+        "android_client_info": {
+          "package_name": "com.example.avtorepair"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhl_XpAFnDi5Jml30Fsh-BZu-av5yVIac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
