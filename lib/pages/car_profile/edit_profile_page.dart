@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:avtorepair/components/app_text_field.dart';
+//import 'package:avtorepair/components/app_text_field.dart';
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/components/user_avatar.dart';
 import 'package:avtorepair/config/app_strings.dart';
@@ -49,7 +49,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Toolbar(title: "Редактировать профиль"),
+      appBar: const Toolbar(title: "Редактирование профиля"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -93,10 +93,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(
                 height: 16,
               ),
-              const AppTextField(hint: AppStrings.lastName),
-              const SizedBox(
-                height: 16,
+              const TextField(
+                //controller: _nameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: AppStrings.lastName,
+                ),
               ),
+              // const AppTextField(hint: AppStrings.lastName),
+              // const SizedBox(
+              //   height: 16,
+              // ),
               // ElevatedButton(
               //   onPressed: () async {
               //     print("data added");

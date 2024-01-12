@@ -1,12 +1,13 @@
-import 'package:avtorepair/pages/refueling_page.dart';
-import 'package:avtorepair/pages/routing_page.dart';
-import 'package:avtorepair/pages/service_page.dart';
-import 'package:avtorepair/pages/statistics_page.dart';
+import 'package:avtorepair/pages/map_page.dart';
+import 'package:avtorepair/pages/refueling/refueling_page.dart';
+//import 'package:avtorepair/pages/routing_page.dart';
+import 'package:avtorepair/pages/service/service_page.dart';
+import 'package:avtorepair/pages/statistics/statistics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:avtorepair/components/bottom_navigation_item.dart';
 import 'package:avtorepair/config/app_icons.dart';
-import 'package:avtorepair/pages/car_profile_page.dart';
+import 'package:avtorepair/pages/car_profile/car_profile_page.dart';
 import 'package:avtorepair/styles/app_colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -54,7 +55,8 @@ class _MainPageState extends State<MainPage> {
     const CarProfilePage(),
     const RefuelingPage(),
     const ServicePage(),
-    const RoutingPage(),
+    const MapPage(),
+    //const RoutingPage(),
     const StatisticsPage(),
   ];
 }
@@ -100,7 +102,7 @@ class MyBottomNavigation extends StatelessWidget {
                   Expanded(
                     child: BottomNavigationItem(
                       onPressed: () => onTap(Menus.carProfile),
-                      icon: AppIcons.icHome,
+                      icon: AppIcons.icUser,
                       current: currentIndex,
                       name: Menus.carProfile,
                     ),
@@ -108,7 +110,7 @@ class MyBottomNavigation extends StatelessWidget {
                   Expanded(
                     child: BottomNavigationItem(
                       onPressed: () => onTap(Menus.refueling),
-                      icon: AppIcons.icRefill,
+                      icon: AppIcons.icRefuling,
                       current: currentIndex,
                       name: Menus.refueling,
                     ),
@@ -117,7 +119,7 @@ class MyBottomNavigation extends StatelessWidget {
                   Expanded(
                     child: BottomNavigationItem(
                       onPressed: () => onTap(Menus.routing),
-                      icon: AppIcons.icLocation,
+                      icon: AppIcons.icMap,
                       current: currentIndex,
                       name: Menus.routing,
                     ),
@@ -137,18 +139,18 @@ class MyBottomNavigation extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            top: 0,
+            top: 28,
             child: GestureDetector(
               onTap: () => onTap(Menus.service),
               child: Container(
-                width: 64,
-                height: 64,
-                padding: const EdgeInsets.all(16),
+                width: 48,
+                height: 48,
+                padding: const EdgeInsets.all(12),
                 decoration: const BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.background,
                   shape: BoxShape.circle,
                 ),
-                child: SvgPicture.asset(AppIcons.icAdd),
+                child: SvgPicture.asset(AppIcons.icCar),
               ),
             ),
           ),

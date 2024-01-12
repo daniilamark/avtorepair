@@ -15,10 +15,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Urbanist',
+        useMaterial3: true,
         scaffoldBackgroundColor: AppColors.background,
         brightness: Brightness.dark,
       ),
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.main,
+      //initialRoute: AppRoutes.routingPage,
+      //initialRoute: AppRoutes.mapPage,
+      //initialRoute: AppRoutes.login,
       routes: AppRoutes.pages,
     );
   }

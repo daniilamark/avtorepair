@@ -1,7 +1,11 @@
-import 'package:avtorepair/pages/edit_profile_page.dart';
-import 'package:avtorepair/pages/login_page.dart';
+import 'package:avtorepair/pages/car_profile/edit_profile_page.dart';
+import 'package:avtorepair/pages/auth/login_page.dart';
+import 'package:avtorepair/pages/car_profile/garage_page.dart';
+import 'package:avtorepair/pages/car_profile/settings_page.dart';
 import 'package:avtorepair/pages/main_page.dart';
-import 'package:avtorepair/pages/registration_page.dart';
+import 'package:avtorepair/pages/map_page.dart';
+import 'package:avtorepair/pages/auth/registration_page.dart';
+import 'package:avtorepair/pages/map/routing_page.dart';
 
 class AppRoutes {
   static final pages = {
@@ -10,6 +14,11 @@ class AppRoutes {
     //home: (context) => HomePage(),
     main: (context) => const MainPage(),
     editProfile: (context) => const EditProfilePage(),
+    routingPage: (context) => const RoutingPage(),
+    mapPage: (context) => const MapPage(),
+
+    garagePage: (context) => const GaragePage(),
+    settingsPage: (context) => const SettingsPage(),
   };
 
   static const login = '/';
@@ -17,4 +26,9 @@ class AppRoutes {
   //static const home = '/home';
   static const main = '/main';
   static const editProfile = '/edit_profile';
+  static const routingPage = '/routingPage';
+  static const mapPage = '/mapPage';
+
+  static const garagePage = '/garage';
+  static const settingsPage = '/settings';
 }

@@ -16,6 +16,11 @@ dependencies:
   sqflite: ^2.3.0
   shared_preferences:
   jwt_decoder:
+  yandex_mapkit: ^3.3.3
+  geolocator: ^10.1.0
+  equatable: ^2.0.5
+  permission_handler: ^11.0.1
+  carousel_slider: ^4.2.1
   
 dev_dependencies:
   flutter_test:
@@ -26,9 +31,11 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/icons/
     - assets/images/
     - assets/temp/
     - assets/svg/
+    
 
   fonts:
   - family: Urbanist

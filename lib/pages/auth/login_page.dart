@@ -1,50 +1,62 @@
 import 'dart:convert';
+
 import 'package:avtorepair/config/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/config/app_strings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  //bool _isNotValidate = false;
 
-  void registerUser() async {
-    print('object');
-    if (nameController.text.isNotEmpty &&
-        lastNameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
-      var regBody = {
-        "name": nameController.text,
-        "last_name": lastNameController.text,
+  final bool _isNotValidate = false;
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+
+    emailController.text = "admin1@admin.com";
+    passwordController.text = "admin1";
+  }
+
+  void initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void loginUser() async {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      print('регистрация старт');
+      var reqBody = {
         "email": emailController.text,
         "password": passwordController.text
       };
-      var response = await http.post(Uri.parse(registration),
+      var response = await http.post(Uri.parse(login),
           headers: {"Content-Type": "application/json"},
-          body: jsonEncode(regBody));
+          body: jsonEncode(reqBody));
       var jsonResponse = jsonDecode(response.body);
-      print(jsonResponse['status']);
       if (jsonResponse['status']) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+        var myToken = jsonResponse['token'];
+        prefs.setString('token', myToken);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.main,
+          (Route<dynamic> route) => false,
+        );
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => Dashboard(token: myToken)));
       } else {
-        print('SomeThing Went Wrong');
+        print('Something went wrong');
       }
-    } else {
-      setState(() {
-        //_isNotValidate = true;
-      });
     }
   }
 
@@ -60,7 +72,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               children: [
                 const Spacer(),
                 const Text(
-                  AppStrings.registration,
+                  AppStrings.helloWelcome,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
@@ -71,51 +83,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   height: 16,
                 ),
                 const Text(
-                  AppStrings.registrationToContinue,
+                  AppStrings.loginToContinue,
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
                 const Spacer(),
                 TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    hintText: AppStrings.username,
-                    //errorText: _isNotValidate ? "Введите имя!" : null,
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.5),
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextField(
-                  controller: lastNameController,
-                  decoration: InputDecoration(
-                    hintText: AppStrings.userlastname,
-                    //errorText: _isNotValidate ? "Введите фамилию!" : null,
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.5),
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextField(
                   controller: emailController,
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: AppStrings.usermail,
-                    //errorText: _isNotValidate ? "Введите e-mail!" : null,
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -130,9 +109,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 TextField(
                   controller: passwordController,
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: AppStrings.userpassword,
-                    //errorText: _isNotValidate ? "Введите пароль!" : null,
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -142,6 +122,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     fillColor: Colors.white.withOpacity(0.5),
                   ),
                 ),
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: TextButton(
+                //     onPressed: () {
+                //       print("Forgot clicked");
+                //     },
+                //     style: TextButton.styleFrom(
+                //       foregroundColor: Colors.white,
+                //     ),
+                //     child: const Text(AppStrings.forgotPassword),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 32,
                 ),
@@ -149,11 +141,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      registerUser();
-                      // Navigator.of(context).pushNamedAndRemoveUntil(
-                      //   AppRoutes.main,
-                      //   (Route<dynamic> route) => false,
-                      // );
+                      loginUser();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -175,7 +163,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         SizedBox(
                           width: 8,
                         ),
-                        Text(AppStrings.signup),
+                        Text(AppStrings.login),
                       ],
                     ),
                   ),
@@ -186,7 +174,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 Row(
                   children: [
                     const Text(
-                      AppStrings.haveAccount,
+                      AppStrings.dontHaveAccount,
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -194,13 +182,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.login);
+                            .pushReplacementNamed(AppRoutes.registration);
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.amber,
                       ),
                       child: const Text(
-                        AppStrings.login,
+                        AppStrings.signup,
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         ),

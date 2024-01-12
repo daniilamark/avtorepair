@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/config/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/components/user_avatar.dart';
 import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/styles/app_text.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 enum ProfileMenu { edit, logout }
 
@@ -18,32 +20,50 @@ class CarProfilePage extends StatelessWidget {
       appBar: Toolbar(
         title: AppStrings.profile,
         actions: [
-          PopupMenuButton<ProfileMenu>(
-            onSelected: (value) {
-              switch (value) {
-                case ProfileMenu.edit:
-                  Navigator.of(context).pushNamed(AppRoutes.editProfile);
-                  break;
-                case ProfileMenu.logout:
-                  Navigator.of(context).pushNamed(AppRoutes.login);
-                  break;
-                default:
-              }
+          IconButton(
+            icon: SvgPicture.asset(AppIcons.icEdit),
+            onPressed: () => {
+              Navigator.of(context).pushNamed(AppRoutes.editProfile),
             },
-            icon: const Icon(Icons.more_vert_rounded),
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                  value: ProfileMenu.edit,
-                  child: Text(AppStrings.edit),
-                ),
-                const PopupMenuItem(
-                  value: ProfileMenu.logout,
-                  child: Text(AppStrings.logout),
-                ),
-              ];
+          ),
+          IconButton(
+            icon: SvgPicture.asset(AppIcons.icGarage),
+            onPressed: () => {
+              Navigator.of(context).pushNamed(AppRoutes.garagePage),
             },
-          )
+          ),
+          IconButton(
+            icon: SvgPicture.asset(AppIcons.icSetting),
+            onPressed: () => {
+              Navigator.of(context).pushNamed(AppRoutes.settingsPage),
+            },
+          ),
+          // PopupMenuButton<ProfileMenu>(
+          //   onSelected: (value) {
+          //     switch (value) {
+          //       case ProfileMenu.edit:
+          //         Navigator.of(context).pushNamed(AppRoutes.editProfile);
+          //         break;
+          //       case ProfileMenu.logout:
+          //         Navigator.of(context).pushNamed(AppRoutes.login);
+          //         break;
+          //       default:
+          //     }
+          //   },
+          //   icon: SvgPicture.asset(AppIcons.icSetting),
+          //   itemBuilder: (context) {
+          //     return [
+          //       const PopupMenuItem(
+          //         value: ProfileMenu.edit,
+          //         child: Text(AppStrings.edit),
+          //       ),
+          //       const PopupMenuItem(
+          //         value: ProfileMenu.logout,
+          //         child: Text(AppStrings.logout),
+          //       ),
+          //     ];
+          //   },
+          // )
         ],
       ),
       body: SingleChildScrollView(
@@ -67,23 +87,29 @@ class CarProfilePage extends StatelessWidget {
               height: 12,
             ),
             Text(
-              'ВАЗ 2110',
+              'Выбранная машина',
               style: AppText.subtitle3,
             ),
             SizedBox(
+              height: 10,
+            ),
+            Divider(
+              thickness: 1,
               height: 24,
             ),
+
+            // марка модель
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   children: [
                     Text(
-                      "76 004",
+                      "Lada",
                       style: AppText.header2,
                     ),
                     Text(
-                      "Километров",
+                      "Марка",
                       style: AppText.subtitle3,
                     ),
                   ],
@@ -91,37 +117,58 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "89",
+                      "110",
                       style: AppText.header2,
                     ),
                     Text(
-                      "Заправок",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "627",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Обслуживания",
+                      "Модель",
                       style: AppText.subtitle3,
                     ),
                   ],
                 )
               ],
             ),
-            SizedBox(
-              height: 20,
+            Divider(
+              thickness: 1,
+              height: 24,
+            ),
+
+            // год пробег
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      "280 800",
+                      style: AppText.header2,
+                    ),
+                    Text(
+                      "Пробег",
+                      style: AppText.subtitle3,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "2006",
+                      style: AppText.header2,
+                    ),
+                    Text(
+                      "Год выпуска",
+                      style: AppText.subtitle3,
+                    ),
+                  ],
+                )
+              ],
             ),
             Divider(
               thickness: 1,
               height: 24,
             ),
-            //
+
+            // кпп двигатель
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -156,39 +203,8 @@ class CarProfilePage extends StatelessWidget {
               height: 24,
             ),
             //
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "Lada",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Марка",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "110",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Модель",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+
+            // КУЗОВ ПРИВОД
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -217,6 +233,72 @@ class CarProfilePage extends StatelessWidget {
                   ],
                 )
               ],
+            ),
+            Divider(
+              thickness: 1,
+              height: 24,
+            ),
+
+            // мощность двигателя объем бака
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      "92 л.с.",
+                      style: AppText.header2,
+                    ),
+                    Text(
+                      "Мощность",
+                      style: AppText.subtitle3,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "42",
+                      style: AppText.header2,
+                    ),
+                    Text(
+                      "Объем бака",
+                      style: AppText.subtitle3,
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Divider(
+              thickness: 1,
+              height: 24,
+            ),
+
+            // VIN
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      "VIN",
+                      style: AppText.header2,
+                    ),
+                    Text(
+                      "X7LLSRB1HAH548712",
+                      style: AppText.subtitle3,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Divider(
+              thickness: 1,
+              height: 24,
+            ),
+
+            SizedBox(
+              height: 120,
             ),
           ],
         ),

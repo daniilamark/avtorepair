@@ -1,7 +1,5 @@
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/config/app_strings.dart';
-import 'package:avtorepair/styles/app_colors.dart';
-import 'package:avtorepair/styles/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/db_helper.dart';
 
@@ -132,8 +130,17 @@ class _ServicePageState extends State<ServicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: const Color(0xFFECEAF4),
-      appBar: const Toolbar(
+      appBar: Toolbar(
         title: AppStrings.service,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.post_add,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            onPressed: () => showBottomSheet(null),
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(
@@ -154,14 +161,17 @@ class _ServicePageState extends State<ServicePage> {
                     ),
                     child: Text(
                       _allData[index]['title'],
-                      style: AppText.body1,
+                      style: const TextStyle(
+                        fontSize: 20,
+                      ),
+                      //style: AppText.body1,
                     ),
                   ),
                   subtitle: Text(
                     _allData[index]['desc'],
-                    style: AppText.body2,
+                    //style: AppText.body2,
                   ),
-                  tileColor: AppColors.white,
+                  //tileColor: AppColors.white,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

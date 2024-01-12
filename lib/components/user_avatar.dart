@@ -21,17 +21,17 @@ class UserAvatar extends StatelessWidget {
             height: size,
           ),
         ),
-        SizedBox(
-          width: 24,
-        ),
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          child: Image.asset(
-            'assets/temp/car.jpg',
-            width: size,
-            height: size,
-          ),
-        ),
+        // SizedBox(
+        //   width: 24,
+        // ),
+        // ClipRRect(
+        //   borderRadius: const BorderRadius.all(Radius.circular(20)),
+        //   child: Image.asset(
+        //     'assets/temp/car.jpg',
+        //     width: size,
+        //     height: size,
+        //   ),
+        // ),
       ],
     );
   }

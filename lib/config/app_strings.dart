@@ -42,7 +42,7 @@ class AppStrings {
   static const nearby = 'Рядом';
 
   static const refueling = 'Заправка';
-  static const service = 'Сервис и обслуживание';
+  static const service = 'Сервис';
   static const routingMaps = 'Маршруты';
   static const statistics = 'Статистика';
 }
