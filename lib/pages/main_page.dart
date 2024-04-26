@@ -1,8 +1,10 @@
+// import 'package:avtorepair/pages/car_profile/garage_page.dart';
 import 'package:avtorepair/pages/map_page.dart';
 import 'package:avtorepair/pages/refueling/refueling_page.dart';
 //import 'package:avtorepair/pages/routing_page.dart';
 import 'package:avtorepair/pages/service/service_page.dart';
 import 'package:avtorepair/pages/statistics/statistics_page.dart';
+// import 'package:avtorepair/services/local_db/local_garage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:avtorepair/components/bottom_navigation_item.dart';
@@ -20,8 +22,28 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Menus currentIndex = Menus.carProfile;
 
+  // List<Map<String, dynamic>> _allData = [];
+  // bool _isLoading = true;
+
+  // void _refreshData() async {
+  //   final data = await LocalGarage.getAllData();
+  //   setState(() {
+  //     _allData = data;
+  //     _isLoading = false;
+  //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _refreshData();
+  // }
+
   @override
   Widget build(BuildContext context) {
+    // final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    //     GarageArguments('' as int, '', '', '', '', '', '')) as GarageArguments;
+
     return Scaffold(
       extendBody: true,
       body: pages[currentIndex.index],
@@ -52,7 +74,15 @@ class _MainPageState extends State<MainPage> {
     //routing
     //statistics
 
-    const CarProfilePage(),
+    const CarProfilePage(
+        // index: argu,
+        // brand: '',
+        // model: '',
+        // mileage: '',
+        // yearIssue: '',
+        // typeFuel: '',
+        // transmission: '',
+        ),
     const RefuelingPage(),
     const ServicePage(),
     const MapPage(),

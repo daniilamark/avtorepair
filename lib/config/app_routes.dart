@@ -16,6 +16,7 @@ class AppRoutes {
     editProfile: (context) => const EditProfilePage(),
     routingPage: (context) => const RoutingPage(),
     mapPage: (context) => const MapPage(),
+    //mapPage: (context) => const MapPage(),
 
     garagePage: (context) => const GaragePage(),
     settingsPage: (context) => const SettingsPage(),

@@ -135,6 +135,13 @@ class _ServicePageState extends State<ServicePage> {
         actions: [
           IconButton(
             icon: const Icon(
+              Icons.calendar_month,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            onPressed: () => showBottomSheet(null),
+          ),
+          IconButton(
+            icon: const Icon(
               Icons.post_add,
               color: Color.fromARGB(255, 255, 255, 255),
             ),

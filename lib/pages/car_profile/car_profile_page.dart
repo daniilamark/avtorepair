@@ -2,6 +2,8 @@
 
 import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/config/app_strings.dart';
+import 'package:avtorepair/pages/car_profile/garage_page.dart';
+import 'package:avtorepair/services/local_db/local_garage.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/components/user_avatar.dart';
@@ -11,11 +13,48 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 enum ProfileMenu { edit, logout }
 
-class CarProfilePage extends StatelessWidget {
+class CarProfilePage extends StatefulWidget {
   const CarProfilePage({super.key});
 
+  // final String brand;
+  // final String model;
+  // final String mileage;
+  // final String yearIssue;
+  // final String typeFuel;
+  // final String transmission;
+  // var list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+
+  @override
+  State<CarProfilePage> createState() => _CarProfilePageState();
+}
+
+class _CarProfilePageState extends State<CarProfilePage> {
+  List<Map<String, dynamic>> _allData = [];
+  bool _isLoading = true;
+
+  void _refreshData() async {
+    final data = await LocalGarage.getAllData();
+    setState(
+      () {
+        _allData = data;
+        _isLoading = false;
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshData();
+  }
+
+  // const CarProfilePage({
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        // GarageArguments('', '2', '', '', '', '', '', '', '', '', ''))
+        GarageArguments(0)) as GarageArguments;
+
     return Scaffold(
       appBar: Toolbar(
         title: AppStrings.profile,
@@ -67,7 +106,7 @@ class CarProfilePage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: const Column(
+        child: Column(
           children: [
             SizedBox(
               height: 12,
@@ -105,7 +144,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Lada",
+                      _allData[arguments.index]['brand'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -117,7 +156,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "110",
+                      _allData[arguments.index]['model'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -140,7 +179,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "280 800",
+                      _allData[arguments.index]['mileage'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -152,7 +191,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "2006",
+                      _allData[arguments.index]['yearIssue'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -175,7 +214,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Механическая",
+                      _allData[arguments.index]['transmission'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -187,7 +226,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Бензиновый",
+                      _allData[arguments.index]['typeFuel'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -211,7 +250,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Седан",
+                      _allData[arguments.index]['carBody'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -223,11 +262,11 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Передний",
+                      _allData[arguments.index]['engineVolume'],
                       style: AppText.header2,
                     ),
                     Text(
-                      "Привод",
+                      "Объем двигателя",
                       style: AppText.subtitle3,
                     ),
                   ],
@@ -246,7 +285,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "92 л.с.",
+                      _allData[arguments.index]['enginePower'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -258,7 +297,7 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "42",
+                      _allData[arguments.index]['volumeTank'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -281,11 +320,11 @@ class CarProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "VIN",
+                      _allData[arguments.index]['vin'],
                       style: AppText.header2,
                     ),
                     Text(
-                      "X7LLSRB1HAH548712",
+                      "VIN",
                       style: AppText.subtitle3,
                     ),
                   ],

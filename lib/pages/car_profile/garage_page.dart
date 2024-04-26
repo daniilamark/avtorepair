@@ -1,3 +1,4 @@
+// import 'package:avtorepair/pages/car_profile/car_profile_page.dart';
 import 'package:avtorepair/services/local_db/local_garage.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/components/toolbar.dart';
@@ -329,6 +330,47 @@ class _GaragePageState extends State<GaragePage> {
                           color: Colors.red,
                         ),
                       ),
+                      IconButton(
+                        // onPressed: () async {
+                        onPressed: () {
+                          // _deleteData(_allData[index]['id'], context);
+                          // await Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CarProfilePage(
+                          //       brand: _allData[index]['brand'],
+                          //       model: _allData[index]['model'],
+                          //       mileage: _allData[index]['mileage'],
+                          //       yearIssue: _allData[index]['yearIssue'],
+                          //       typeFuel: _allData[index]['typeFuel'],
+                          //       transmission: _allData[index]['transmission'],
+                          //     ),
+                          //   ),
+                          // );
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/main',
+                            arguments: GarageArguments(
+                              index,
+                              // _allData[index]['brand'],
+                              // _allData[index]['model'],
+                              // _allData[index]['mileage'],
+                              // _allData[index]['yearIssue'],
+                              // _allData[index]['typeFuel'],
+                              // _allData[index]['transmission'],
+                              // _allData[index]['carBody'],
+                              // _allData[index]['engineVolume'],
+                              // _allData[index]['enginePower'],
+                              // _allData[index]['volumeTank'],
+                              // _allData[index]['vin'],
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.check_box,
+                          color: Color.fromARGB(255, 184, 166, 165),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -336,4 +378,40 @@ class _GaragePageState extends State<GaragePage> {
             ),
     );
   }
+}
+
+// class GarageArguments {
+//   // final int index;
+//   final String brand;
+//   final String model;
+//   final String mileage;
+//   final String yearIssue;
+//   final String typeFuel;
+//   final String transmission;
+//   final String carBody;
+//   final String engineVolume;
+//   final String enginePower;
+//   final String volumeTank;
+//   final String vin;
+//   GarageArguments(
+//     // this.index,
+//     this.brand,
+//     this.model,
+//     this.mileage,
+//     this.yearIssue,
+//     this.typeFuel,
+//     this.transmission,
+//     this.carBody,
+//     this.engineVolume,
+//     this.enginePower,
+//     this.volumeTank,
+//     this.vin,
+//   );
+// }
+class GarageArguments {
+  final int index;
+
+  GarageArguments(
+    this.index,
+  );
 }

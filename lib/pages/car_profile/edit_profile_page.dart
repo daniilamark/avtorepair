@@ -5,6 +5,8 @@ import 'package:avtorepair/components/user_avatar.dart';
 import 'package:avtorepair/config/app_strings.dart';
 import 'package:avtorepair/styles/app_colors.dart';
 
+// import '../../config/db_helper.dart';
+
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
@@ -84,7 +86,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 height: 60,
               ),
               const TextField(
-                //controller: _nameController,
+                // controller: _nameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: AppStrings.firstName,
@@ -94,7 +96,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 height: 16,
               ),
               const TextField(
-                //controller: _nameController,
+                // controller: _nameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: AppStrings.lastName,
@@ -192,7 +194,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               //       ),
               //     ],
               //   ),
-              //),
+              // ),
             ],
           ),
         ),
