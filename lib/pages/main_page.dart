@@ -75,7 +75,7 @@ class _MainPageState extends State<MainPage> {
     //statistics
 
     const CarProfilePage(
-        // index: argu,
+        //   index: argu,
         // brand: '',
         // model: '',
         // mileage: '',
@@ -83,6 +83,7 @@ class _MainPageState extends State<MainPage> {
         // typeFuel: '',
         // transmission: '',
         ),
+
     const RefuelingPage(),
     const ServicePage(),
     const MapPage(),

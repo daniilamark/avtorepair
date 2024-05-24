@@ -3,6 +3,8 @@ import 'package:avtorepair/config/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/db_helper.dart';
 
+import '../../config/app_routes.dart';
+
 class ServicePage extends StatefulWidget {
   const ServicePage({super.key});
 
@@ -138,7 +140,8 @@ class _ServicePageState extends State<ServicePage> {
               Icons.calendar_month,
               color: Color.fromARGB(255, 255, 255, 255),
             ),
-            onPressed: () => showBottomSheet(null),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(AppRoutes.calendarPage),
           ),
           IconButton(
             icon: const Icon(

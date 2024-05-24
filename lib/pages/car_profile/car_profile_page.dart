@@ -30,14 +30,14 @@ class CarProfilePage extends StatefulWidget {
 
 class _CarProfilePageState extends State<CarProfilePage> {
   List<Map<String, dynamic>> _allData = [];
-  bool _isLoading = true;
-
+  bool _isLoading = false;
+//
   void _refreshData() async {
     final data = await LocalGarage.getAllData();
     setState(
       () {
         _allData = data;
-        _isLoading = false;
+        _isLoading = true;
       },
     );
   }
@@ -52,8 +52,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
   @override
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        // GarageArguments('', '2', '', '', '', '', '', '', '', '', ''))
-        GarageArguments(0)) as GarageArguments;
+        GarageArguments(0, '2', '', '', '', '', '', '', '', '', '', ''));
+    //GarageArguments(0)) as GarageArguments;
 
     return Scaffold(
       appBar: Toolbar(
@@ -144,7 +144,11 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['brand'],
+                      _allData[0]['brand'],
+                      // _allData[arguments.index]['brand'].isNull
+                      //     ? 'пусто'
+                      //     : 'пусто',
+
                       style: AppText.header2,
                     ),
                     Text(
@@ -156,7 +160,7 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['model'],
+                      _allData[0]['model'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -179,7 +183,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['mileage'],
+                      _allData[0]['mileage'],
+                      //_allData[arguments]['mileage'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -191,7 +196,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['yearIssue'],
+                      _allData[0]['yearIssue'],
+                      //_allData[arguments.index]['yearIssue'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -214,7 +220,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['transmission'],
+                      _allData[0]['transmission'],
+                      //_allData[arguments.index]['transmission'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -226,7 +233,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['typeFuel'],
+                      _allData[0]['typeFuel'],
+                      // _allData[arguments.index]['typeFuel'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -250,7 +258,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['carBody'],
+                      _allData[0]['carBody'],
+                      //_allData[arguments.index]['carBody'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -262,7 +271,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['engineVolume'],
+                      _allData[0]['engineVolume'],
+                      //_allData[arguments.index]['engineVolume'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -285,7 +295,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['enginePower'],
+                      _allData[0]['enginePower'],
+                      // _allData[arguments.index]['enginePower'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -297,7 +308,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['volumeTank'],
+                      _allData[0]['volumeTank'],
+                      // _allData[arguments.index]['volumeTank'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(
@@ -320,7 +332,9 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[arguments.index]['vin'],
+                      _allData[0]['vin'],
+
+                      // _allData[arguments.index]['vin'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
                     Text(

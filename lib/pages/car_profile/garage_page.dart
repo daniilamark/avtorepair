@@ -352,17 +352,17 @@ class _GaragePageState extends State<GaragePage> {
                             '/main',
                             arguments: GarageArguments(
                               index,
-                              // _allData[index]['brand'],
-                              // _allData[index]['model'],
-                              // _allData[index]['mileage'],
-                              // _allData[index]['yearIssue'],
-                              // _allData[index]['typeFuel'],
-                              // _allData[index]['transmission'],
-                              // _allData[index]['carBody'],
-                              // _allData[index]['engineVolume'],
-                              // _allData[index]['enginePower'],
-                              // _allData[index]['volumeTank'],
-                              // _allData[index]['vin'],
+                              _allData[index]['brand'],
+                              _allData[index]['model'],
+                              _allData[index]['mileage'],
+                              _allData[index]['yearIssue'],
+                              _allData[index]['typeFuel'],
+                              _allData[index]['transmission'],
+                              _allData[index]['carBody'],
+                              _allData[index]['engineVolume'],
+                              _allData[index]['enginePower'],
+                              _allData[index]['volumeTank'],
+                              _allData[index]['vin'],
                             ),
                           );
                         },
@@ -380,38 +380,39 @@ class _GaragePageState extends State<GaragePage> {
   }
 }
 
-// class GarageArguments {
-//   // final int index;
-//   final String brand;
-//   final String model;
-//   final String mileage;
-//   final String yearIssue;
-//   final String typeFuel;
-//   final String transmission;
-//   final String carBody;
-//   final String engineVolume;
-//   final String enginePower;
-//   final String volumeTank;
-//   final String vin;
-//   GarageArguments(
-//     // this.index,
-//     this.brand,
-//     this.model,
-//     this.mileage,
-//     this.yearIssue,
-//     this.typeFuel,
-//     this.transmission,
-//     this.carBody,
-//     this.engineVolume,
-//     this.enginePower,
-//     this.volumeTank,
-//     this.vin,
-//   );
-// }
 class GarageArguments {
   final int index;
-
+  final String brand;
+  final String model;
+  final String mileage;
+  final String yearIssue;
+  final String typeFuel;
+  final String transmission;
+  final String carBody;
+  final String engineVolume;
+  final String enginePower;
+  final String volumeTank;
+  final String vin;
   GarageArguments(
     this.index,
+    this.brand,
+    this.model,
+    this.mileage,
+    this.yearIssue,
+    this.typeFuel,
+    this.transmission,
+    this.carBody,
+    this.engineVolume,
+    this.enginePower,
+    this.volumeTank,
+    this.vin,
   );
 }
+// class GarageArguments {
+//   // final int index;
+//   final int index;
+
+//   GarageArguments(
+//     this.index,
+//   );
+// }

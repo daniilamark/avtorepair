@@ -1,9 +1,10 @@
 import 'package:avtorepair/config/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/styles/app_colors.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
