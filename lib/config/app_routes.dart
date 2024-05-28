@@ -1,7 +1,7 @@
 import 'package:avtorepair/pages/car_profile/edit_profile_page.dart';
 import 'package:avtorepair/pages/auth/login_page.dart';
 import 'package:avtorepair/pages/car_profile/garage_page.dart';
-import 'package:avtorepair/pages/car_profile/settings_page.dart';
+import 'package:avtorepair/pages/car_profile/doc_page.dart';
 import 'package:avtorepair/pages/main_page.dart';
 import 'package:avtorepair/pages/map_page.dart';
 import 'package:avtorepair/pages/auth/registration_page.dart';
@@ -20,7 +20,7 @@ class AppRoutes {
     //mapPage: (context) => const MapPage(),
 
     garagePage: (context) => const GaragePage(),
-    settingsPage: (context) => const SettingsPage(),
+    settingsPage: (context) => const DocPage(),
     calendarPage: (context) => TableBasicsExample(),
   };
 

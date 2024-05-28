@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/config/app_strings.dart';
 import 'package:avtorepair/services/map/clusterized_icon_painter.dart';
+import 'package:avtorepair/services/map/event_map.dart';
 import 'package:avtorepair/services/map/map_point.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,8 +17,17 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  Map<DateTime, List<EventMap>> events = {};
+  final TextEditingController _eventController = TextEditingController();
+  // late final ValueNotifier<List<EventMap>> _selectedEvents;
+  // final List<MapObject> mapObjects = [];
+  // final MapObjectId mapObjectId = const MapObjectId('map_object_collection');
+
+// ///////////////////////////////////////////////////////////////////
   /// Контроллер для управления картами
   late final YandexMapController _mapController;
+  final animation =
+      const MapAnimation(type: MapAnimationType.smooth, duration: 2.0);
 
   /// Значение текущего масштаба карты
   var _mapZoom = 0.0;
@@ -30,6 +40,9 @@ class _MapPageState extends State<MapPage> {
 
   /// Список точек на карте, по которым строится автомобильный маршрут
   List<Point> _drivingPointsList = [];
+
+  /// Список точек для сохранения
+  List<Point> _myPointsList = [];
 
   /// Результаты поиска маршрутов на карте
   DrivingResultWithSession? _drivingResultWithSession;
@@ -67,6 +80,65 @@ class _MapPageState extends State<MapPage> {
             _mapZoom = cameraPosition.zoom;
           });
         },
+        onMapTap: (argument) {
+          setState(() {
+            // добавляем точку на
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // icon: Icon(
+                  //   Icons.map_outlined,
+                  //   color: Color.fromARGB(255, 255, 255, 255),
+                  // ),
+                  scrollable: true,
+                  title: const Text("Добавить"),
+                  content: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Событие',
+                      ),
+                      controller: _eventController,
+                    ),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Отмена"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // events.addAll(
+                        //   {
+                        //     _selectedDay!: [
+                        //       Event(_eventController.text),
+                        //     ]
+                        //   },
+                        // );
+                        // добавляем точку на карте
+                        _myPointsList.add(argument);
+                        // if (_myPointsList.length == 1) {
+                        //   _drivingPointsList.add(argument);
+                        // } else {
+                        //   _drivingPointsList = [];
+                        //   _drivingMapLines = [];
+                        //   _drivingResultWithSession = null;
+                        // }
+                        Navigator.of(context).pop();
+                        // _selectedEvents.value = _getEventsForDay(_selectedDay!);
+                      },
+                      child: const Text("ОК"),
+                    ),
+                  ],
+                );
+              },
+            );
+          });
+        },
         onMapLongTap: (argument) {
           setState(() {
             // добавляем точку маршрута на карте, если еще не выбраны две точки
@@ -91,12 +163,15 @@ class _MapPageState extends State<MapPage> {
           _buildRoutes();
         },
         mapObjects: [
+          // mapObjects,
           _getClusterizedCollection(
             placemarks: _getPlacemarkObjects(context),
           ),
           //_getPolygonMapObject(context, points: _polygonPointsList ?? []),
           ..._getDrivingPlacemarks(context, drivingPoints: _drivingPointsList),
           ..._drivingMapLines,
+
+          // ..._getMyPlacemarks(context, myPoints: _myPointsList),
         ],
         onUserLocationAdded: (view) async {
           // получаем местоположение пользователя
@@ -121,7 +196,39 @@ class _MapPageState extends State<MapPage> {
           );
         },
       ),
+      floatingActionButton: Column(
+        children: [
+          const SizedBox(
+            height: 380,
+          ),
+          FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              _zoomIn();
+            },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
+            child: const Icon(Icons.remove),
+            onPressed: () {
+              _zoomOut();
+            },
+          )
+        ],
+      ),
     );
+  }
+
+  Future<void> _zoomIn() async {
+    // YandexMapController controller = await _c
+    _mapController.moveCamera(CameraUpdate.zoomIn(), animation: animation);
+  }
+
+  Future<void> _zoomOut() async {
+    // YandexMapController controller = await _c
+    _mapController.moveCamera(CameraUpdate.zoomOut(), animation: animation);
   }
 
   /// Метод для получения коллекции кластеризованных маркеров
@@ -202,18 +309,20 @@ class _MapPageState extends State<MapPage> {
       }
     });
   }
+
+  //
 }
 
 /// Метод для генерации точек на карте
 List<MapPoint> _getMapPoints() {
   return const [
-    MapPoint(name: 'Москва', latitude: 55.755864, longitude: 37.617698),
-    MapPoint(
-        name: 'Санкт-Петербург', latitude: 59.938784, longitude: 30.314997),
-    MapPoint(name: 'Лондон', latitude: 51.507351, longitude: -0.127696),
-    MapPoint(name: 'Рим', latitude: 41.887064, longitude: 12.504809),
-    MapPoint(name: 'Париж', latitude: 48.856663, longitude: 2.351556),
-    MapPoint(name: 'Стокгольм', latitude: 59.347360, longitude: 18.341573),
+    MapPoint(name: 'РГППУ', latitude: 56.886258, longitude: 60.601292),
+    MapPoint(name: 'Летний парк', latitude: 56.888004, longitude: 60.601448),
+  ];
+}
+
+List<MapPoint> _addMapPoints() {
+  return const [
     MapPoint(name: 'РГППУ', latitude: 56.886258, longitude: 60.601292),
     MapPoint(name: 'Летний парк', latitude: 56.888004, longitude: 60.601448),
   ];
@@ -221,6 +330,7 @@ List<MapPoint> _getMapPoints() {
 
 /// Метод для генерации объектов маркеров для отображения на карте
 List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
+  // _myPointsList;
   return _getMapPoints()
       .map(
         (point) => PlacemarkMapObject(
@@ -271,6 +381,31 @@ List<PlacemarkMapObject> _getDrivingPlacemarks(
       )
       .toList();
 }
+
+/// Метод для генерации ТОЧКИ
+// List<PlacemarkMapObject> _getMyPlacemarks(
+//   BuildContext context, {
+//   required List<Point> myPoints,
+// }) {
+//   return myPoints
+//       .map(
+//         (point) => PlacemarkMapObject(
+//           mapId: MapObjectId('MapObject $point'),
+//           point: Point(latitude: point.latitude, longitude: point.longitude),
+//           opacity: 1,
+//           icon: PlacemarkIcon.single(
+//             PlacemarkIconStyle(
+//               image: BitmapDescriptor.fromAssetImage(
+//                 'assets/icons/place.png',
+//                 //'assets/icons/location.png',
+//               ),
+//               scale: 1,
+//             ),
+//           ),
+//         ),
+//       )
+//       .toList();
+// }
 
 /// Метод для получения маршрутов проезда от точки начала к точке конца
 DrivingResultWithSession _getDrivingResultWithSession({

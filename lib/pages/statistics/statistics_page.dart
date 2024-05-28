@@ -1,4 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:avtorepair/pages/statistics/bar_chart_widget.dart';
+import 'package:avtorepair/pages/statistics/data/price_point.dart';
+import 'package:avtorepair/pages/statistics/data/sector.dart';
+import 'package:avtorepair/pages/statistics/line_chart_widget.dart';
+import 'package:avtorepair/pages/statistics/pie_chart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/config/app_strings.dart';
@@ -19,28 +23,24 @@ class _StatisticsPageState extends State<StatisticsPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
           child: Column(
-            children: [
-              const SizedBox(
-                height: 80,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              LineChartWidget(pricePoints),
+              PieChartWidget(industrySectors),
+              Column(
+                children: industrySectors
+                    .map<Widget>((sector) => SectorRow(sector))
+                    .toList(),
               ),
-              const Center(
-                child: Text(
-                  "Котостатистика",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Center(
-                child: ImageCarousel(),
-              ),
+              const Padding(padding: EdgeInsets.all(60)),
+              const Text("Расходы"),
+              BarChartWidget(points: pricePoints),
+              const SizedBox(height: 50),
+              const Text("Километраж"),
+              BarChartWidget(points: pricePoints),
+              const SizedBox(height: 300),
             ],
           ),
         ),
@@ -49,39 +49,23 @@ class _StatisticsPageState extends State<StatisticsPage> {
   }
 }
 
-class ImageCarousel extends StatelessWidget {
-  final List<String> pictureUrls = [
-    "https://i.pinimg.com/originals/db/b0/8a/dbb08a069d1f24c4b61da740198a59cc.jpg",
-    "https://storge.pic2.me/upload/186/59930129033a9.jpg",
-    "https://proprikol.ru/wp-content/uploads/2019/08/kartinki-nyashnye-kotiki-16.jpg",
-    "http://tapeciarnia.pl/tapety/normalne/130115_dwa_kotki_skrzynia.jpg",
-    "https://w-dog.ru/wallpapers/5/18/544018020951502/koshka-siamskaya-boke-na-dereve-goluboglazaya.jpg",
-    "https://wdorogu.ru/images/wp-content/uploads/2020/10/90366-ksyu_1280x960.jpg",
-  ];
-
-  ImageCarousel({super.key});
+class SectorRow extends StatelessWidget {
+  const SectorRow(this.sector, {Key? key}) : super(key: key);
+  final Sector sector;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CarouselSlider(
-        items: pictureUrls
-            .map(
-              (url) => Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Image.network(url, fit: BoxFit.cover),
-              ),
-            )
-            .toList(),
-        options: CarouselOptions(
-          autoPlay: true,
-          autoPlayInterval: const Duration(seconds: 2),
-          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: true,
+    return Row(
+      children: [
+        SizedBox(
+          width: 16,
+          child: CircleAvatar(
+            backgroundColor: sector.color,
+          ),
         ),
-      ),
+        const Spacer(),
+        Text(sector.title),
+      ],
     );
   }
 }

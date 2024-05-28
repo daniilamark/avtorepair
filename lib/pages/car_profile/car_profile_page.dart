@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:avtorepair/components/car_avatar.dart';
 import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/config/app_strings.dart';
 import 'package:avtorepair/pages/car_profile/garage_page.dart';
@@ -51,8 +52,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
   // const CarProfilePage({
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        GarageArguments(0, '2', '', '', '', '', '', '', '', '', '', ''));
+    // final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    //     GarageArguments(Null, '2', '', '', '', '', '', '', '', '', '', ''));
     //GarageArguments(0)) as GarageArguments;
 
     return Scaffold(
@@ -72,7 +73,10 @@ class _CarProfilePageState extends State<CarProfilePage> {
             },
           ),
           IconButton(
-            icon: SvgPicture.asset(AppIcons.icSetting),
+            icon: Icon(
+              Icons.file_present_outlined,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
             onPressed: () => {
               Navigator.of(context).pushNamed(AppRoutes.settingsPage),
             },
@@ -111,10 +115,17 @@ class _CarProfilePageState extends State<CarProfilePage> {
             SizedBox(
               height: 12,
             ),
-            UserAvatar(
-              size: 120,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                UserAvatar(
+                  size: 120,
+                ),
+                CarAvatar(
+                  size: 120,
+                ),
+              ],
             ),
-
             SizedBox(
               height: 24,
             ),
@@ -125,10 +136,27 @@ class _CarProfilePageState extends State<CarProfilePage> {
             SizedBox(
               height: 12,
             ),
-            Text(
-              'Выбранная машина',
-              style: AppText.subtitle3,
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     Text(
+            //       _allData[0]['brand'],
+            //       // _allData[arguments.index]['brand'].isNull
+            //       //     ? 'пусто'
+            //       //     : 'пусто',
+
+            //       style: AppText.header2,
+            //     ),
+            //     Text(
+            //       _allData[0]['model'],
+            //       // _allData[arguments.index]['brand'].isNull
+            //       //     ? 'пусто'
+            //       //     : 'пусто',
+
+            //       style: AppText.header2,
+            //     ),
+            //   ],
+            // ),
             SizedBox(
               height: 10,
             ),
@@ -144,7 +172,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['brand'],
+                      "",
+                      // _allData[0]['brand'],
                       // _allData[arguments.index]['brand'].isNull
                       //     ? 'пусто'
                       //     : 'пусто',
@@ -160,7 +189,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['model'],
+                      "",
+                      // _allData[0]['model'],
                       style: AppText.header2,
                     ),
                     Text(
@@ -183,7 +213,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['mileage'],
+                      "",
+                      // _allData[0]['mileage'],
                       //_allData[arguments]['mileage'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -196,7 +227,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['yearIssue'],
+                      "",
+                      // _allData[0]['yearIssue'],
                       //_allData[arguments.index]['yearIssue'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -220,7 +252,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['transmission'],
+                      "",
+                      // _allData[0]['transmission'],
                       //_allData[arguments.index]['transmission'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -233,7 +266,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['typeFuel'],
+                      "",
+                      // _allData[0]['typeFuel'],
                       // _allData[arguments.index]['typeFuel'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -258,7 +292,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['carBody'],
+                      "",
+                      // _allData[0]['carBody'],
                       //_allData[arguments.index]['carBody'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -271,7 +306,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['engineVolume'],
+                      "",
+                      // _allData[0]['engineVolume'],
                       //_allData[arguments.index]['engineVolume'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -295,7 +331,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['enginePower'],
+                      "",
+                      // _allData[0]['enginePower'],
                       // _allData[arguments.index]['enginePower'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -308,7 +345,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['volumeTank'],
+                      "",
+                      // _allData[0]['volumeTank'],
                       // _allData[arguments.index]['volumeTank'].isEmpty ?? "1",
                       style: AppText.header2,
                     ),
@@ -332,7 +370,8 @@ class _CarProfilePageState extends State<CarProfilePage> {
                 Column(
                   children: [
                     Text(
-                      _allData[0]['vin'],
+                      "",
+                      // _allData[0]['vin'],
 
                       // _allData[arguments.index]['vin'].isEmpty ?? "1",
                       style: AppText.header2,

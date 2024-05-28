@@ -17,4 +17,5 @@ class AppIcons {
   static const icGarage = '${_svg}ic_garage.svg';
   static const icSetting = '${_svg}ic_setting.svg';
   static const icLocation = '${_svg}location.svg';
+  static const icDoc = '${_svg}doc.svg';
 }

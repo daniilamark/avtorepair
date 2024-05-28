@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:async';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class LocalRefueling {
@@ -8,6 +7,7 @@ class LocalRefueling {
       CREATE TABLE refuiling(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         typeFuel TEXT,
+        autoCar TEXT,
         count TEXT,
         summa TEXT,
         address TEXT,
@@ -23,12 +23,13 @@ class LocalRefueling {
     });
   }
 
-  static Future<int> createdData(String typeFuel, String count, String summa,
-      String address, String comment) async {
+  static Future<int> createdData(String typeFuel, String autoCar, String count,
+      String summa, String address, String comment) async {
     final db = await LocalRefueling.db();
 
     final data = {
       'typeFuel': typeFuel,
+      'autoCar': autoCar,
       'count': count,
       'summa': summa,
       'address': address,
@@ -49,12 +50,13 @@ class LocalRefueling {
     return db.query('refuiling', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
-  static Future<int> updateData(int id, String typeFuel, String count,
-      String summa, String address, String comment) async {
+  static Future<int> updateData(int id, String typeFuel, String autoCar,
+      String count, String summa, String address, String comment) async {
     final db = await LocalRefueling.db();
 
     final data = {
       'typeFuel': typeFuel,
+      'autoCar': autoCar,
       'count': count,
       'summa': summa,
       'address': address,
