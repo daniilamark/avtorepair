@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:avtorepair/config/api_config.dart';
+import 'package:avtorepair/pages/auth/registration_page.dart';
+import 'package:avtorepair/pages/main_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/config/app_strings.dart';
@@ -18,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  final bool _isNotValidate = false;
+  bool _isNotValidate = false;
   late SharedPreferences prefs;
 
   @override
@@ -28,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
     emailController.text = "admin1@admin.com";
     passwordController.text = "admin1";
+    // emailText = emailController.text;
   }
 
   void initSharedPref() async {
@@ -36,7 +40,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void loginUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      print('регистрация старт');
+      print('логинимся');
+
       var reqBody = {
         "email": emailController.text,
         "password": passwordController.text
@@ -44,17 +49,32 @@ class _LoginPageState extends State<LoginPage> {
       var response = await http.post(Uri.parse(login),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(reqBody));
+
       var jsonResponse = jsonDecode(response.body);
+      print(response);
       if (jsonResponse['status']) {
         var myToken = jsonResponse['token'];
         prefs.setString('token', myToken);
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.main,
-          (Route<dynamic> route) => false,
-        );
+        // print('tyt');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => MainPage(token: myToken)));
+
+        // Navigator.of(context).pushNamedAndRemoveUntil(
+        //   AppRoutes.main,
+        //   (Route<dynamic> route) => false,
+        //   arguments: {
+        //     emailController.text,
+        //   },
+        // );
+        // );
+
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => CarProfilePage(emailController.text)));
+
         // Navigator.push(context,
         //     MaterialPageRoute(builder: (context) => Dashboard(token: myToken)));
       } else {
+        _isNotValidate = true;
         print('Something went wrong');
       }
     }
@@ -94,7 +114,8 @@ class _LoginPageState extends State<LoginPage> {
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: AppStrings.usermail,
-                    errorText: _isNotValidate ? "Enter Proper Info" : null,
+                    errorText: _isNotValidate ? "Заполните все поля!" : null,
+                    labelText: "Логин",
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -112,7 +133,8 @@ class _LoginPageState extends State<LoginPage> {
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: AppStrings.userpassword,
-                    errorText: _isNotValidate ? "Enter Proper Info" : null,
+                    labelText: "Пароль",
+                    errorText: _isNotValidate ? "Заполните все поля" : null,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -181,8 +203,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.registration);
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed(AppRoutes.registration);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegistrationPage()));
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.amber,
@@ -205,3 +231,35 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+// class AppRoutes {
+//   // final _LoginPageState aw = _LoginPageState();
+
+//   final pages = {
+//     login: (context) => const LoginPage(),
+//     registration: (context) => const RegistrationPage(),
+//     //home: (context) => HomePage(),
+//     main: (context) => MainPage(_LoginPageState.getEmail()),
+//     editProfile: (context) => const EditProfilePage(),
+//     routingPage: (context) => const RoutingPage(),
+//     mapPage: (context) => const MapPage(),
+//     //mapPage: (context) => const MapPage(),
+
+//     garagePage: (context) => const GaragePage(),
+//     settingsPage: (context) => const DocPage(),
+//     calendarPage: (context) => TableBasicsExample(),
+//   };
+
+//   static const login = '/';
+//   static const registration = '/registration';
+//   //static const home = '/home';
+//   static const main = '/main';
+//   static const editProfile = '/edit_profile';
+//   static const routingPage = '/routingPage';
+//   static const mapPage = '/mapPage';
+
+//   static const garagePage = '/garage';
+//   static const settingsPage = '/settings';
+
+//   static const calendarPage = '/calendar';
+// }

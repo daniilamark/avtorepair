@@ -12,6 +12,11 @@ class AppText {
     fontWeight: FontWeight.w600,
   );
 
+  static const header3 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+  );
+
   static const subtitle1 = TextStyle(
     color: AppColors.black,
     fontSize: 16,

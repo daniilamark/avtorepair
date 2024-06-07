@@ -44,11 +44,15 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             builder: (context) {
               return AlertDialog(
                 scrollable: true,
-                title: Text("Сервис"),
+                title: Text("Создать"),
                 content: Padding(
                   padding: EdgeInsets.all(8),
                   child: TextField(
                     controller: _eventController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Сервис",
+                    ),
                   ),
                 ),
                 actions: [
@@ -116,10 +120,10 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      // decoration: BoxDecoration(
+                      //   border: Border.all(),
+                      //   borderRadius: BorderRadius.circular(12),
+                      // ),
                       child: ListTile(
                         onTap: () => print(""),
                         title: Text('${value[index]}'),

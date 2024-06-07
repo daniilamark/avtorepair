@@ -20,7 +20,7 @@ class _MapPageState extends State<MapPage> {
   Map<DateTime, List<EventMap>> events = {};
   final TextEditingController _eventController = TextEditingController();
   // late final ValueNotifier<List<EventMap>> _selectedEvents;
-  // final List<MapObject> mapObjects = [];
+  final List<MapObject> mapObjects = [];
   // final MapObjectId mapObjectId = const MapObjectId('map_object_collection');
 
 // ///////////////////////////////////////////////////////////////////
@@ -121,13 +121,13 @@ class _MapPageState extends State<MapPage> {
                         // );
                         // добавляем точку на карте
                         _myPointsList.add(argument);
-                        // if (_myPointsList.length == 1) {
-                        //   _drivingPointsList.add(argument);
-                        // } else {
-                        //   _drivingPointsList = [];
-                        //   _drivingMapLines = [];
-                        //   _drivingResultWithSession = null;
-                        // }
+                        if (_myPointsList.length == 1) {
+                          _drivingPointsList.add(argument);
+                        } else {
+                          _drivingPointsList = [];
+                          _drivingMapLines = [];
+                          _drivingResultWithSession = null;
+                        }
                         Navigator.of(context).pop();
                         // _selectedEvents.value = _getEventsForDay(_selectedDay!);
                       },

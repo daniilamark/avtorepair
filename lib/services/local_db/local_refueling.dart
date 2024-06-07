@@ -8,8 +8,8 @@ class LocalRefueling {
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         typeFuel TEXT,
         autoCar TEXT,
-        count TEXT,
-        summa TEXT,
+        count INTEGER,
+        summa INTEGER,
         address TEXT,
         comment TEXT,
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -23,8 +23,8 @@ class LocalRefueling {
     });
   }
 
-  static Future<int> createdData(String typeFuel, String autoCar, String count,
-      String summa, String address, String comment) async {
+  static Future<int> createdData(String typeFuel, String autoCar, int count,
+      int summa, String address, String comment) async {
     final db = await LocalRefueling.db();
 
     final data = {
@@ -51,7 +51,7 @@ class LocalRefueling {
   }
 
   static Future<int> updateData(int id, String typeFuel, String autoCar,
-      String count, String summa, String address, String comment) async {
+      int count, int summa, String address, String comment) async {
     final db = await LocalRefueling.db();
 
     final data = {
@@ -78,12 +78,36 @@ class LocalRefueling {
     }
   }
 
-  Future<String> getCount() async {
-    //database connection
+  static Future<double> getSummaRefueling() async {
     final db = await LocalRefueling.db();
-    var result = await db.rawQuery('SELECT COUNT (*) from refuiling');
-    //int count = Sqflite.firstIntValue(x);
-    String count = result.length.toString();
-    return count;
+    var result = await db.rawQuery('SELECT summa from refuiling');
+
+    double totalSum = 0;
+    for (final element in result) {
+      totalSum += element['summa'] as int;
+    }
+
+    return totalSum;
   }
+
+  static Future<double> getCountRefueling() async {
+    final db = await LocalRefueling.db();
+    var result = await db.rawQuery('SELECT count from refuiling');
+
+    double totalCount = 0;
+    for (final element in result) {
+      totalCount += element['count'] as int;
+    }
+
+    return totalCount;
+  }
+
+  // Future<String> getSumma() async {
+  //   //database connection
+  //   final db = await LocalRefueling.db();
+  //   var result = await db.rawQuery('SELECT SUMMA (*) from refuiling');
+
+  //   String summa = result.length.toString();
+  //   return summa;
+  // }
 }

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:avtorepair/config/db_helper.dart';
+import 'package:avtorepair/services/local_db/local_refueling.dart';
 import 'package:flutter/material.dart';
 
 class Sector {
@@ -10,12 +12,25 @@ class Sector {
   Sector({required this.color, required this.value, required this.title});
 }
 
+double? _dataRefueling;
+double? _dataSevice;
+
+void _refreshData() async {
+  double dataRefueling = await LocalRefueling.getSummaRefueling();
+  double dataSevice = await SQLHelper.getSummaSevice();
+  _dataRefueling = dataRefueling;
+  _dataSevice = dataSevice;
+  // print(data);
+}
+
 List<double> get randomNumbers {
-  final Random random = Random();
-  final randomNumbers = <double>[];
-  for (var i = 1; i <= 4; i++) {
-    randomNumbers.add(random.nextDouble() * 100);
-  }
+  _refreshData();
+  // final Random random = Random();
+  final randomNumbers = <double>[_dataSevice!, _dataRefueling!];
+
+  // for (var i = 1; i <= 2; i++) {
+  //   randomNumbers.add(random.nextDouble() * 100);
+  // }
 
   return randomNumbers;
 }
@@ -32,14 +47,14 @@ List<Sector> get industrySectors {
       value: randomNumbers[1],
       title: 'Бензин',
     ),
-    Sector(
-        color: Colors.deepPurpleAccent,
-        value: randomNumbers[2],
-        title: 'Обслуживание'),
-    Sector(
-      color: Colors.yellow,
-      value: randomNumbers[3],
-      title: 'Штрафы',
-    ),
+    // Sector(
+    //     color: Colors.deepPurpleAccent,
+    //     value: randomNumbers[2],
+    //     title: 'Обслуживание'),
+    // Sector(
+    //   color: Colors.yellow,
+    //   value: randomNumbers[3],
+    //   title: 'Штрафы',
+    // ),
   ];
 }

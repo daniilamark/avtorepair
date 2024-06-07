@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:avtorepair/config/api_config.dart';
+import 'package:avtorepair/pages/auth/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/config/app_strings.dart';
@@ -17,7 +18,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final bool _isNotValidate = false;
+  bool _isNotValidate = false;
 
   void registerUser() async {
     print('func register start');
@@ -44,7 +45,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       }
     } else {
       setState(() {
-        //_isNotValidate = true;
+        _isNotValidate = true;
       });
     }
   }
@@ -194,8 +195,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.login);
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed(AppRoutes.login);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.amber,

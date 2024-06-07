@@ -1,14 +1,26 @@
-import 'package:avtorepair/config/app_routes.dart';
+// import 'package:avtorepair/config/app_routes.dart';
+import 'package:avtorepair/pages/auth/login_page.dart';
+import 'package:avtorepair/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/styles/app_colors.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  initializeDateFormatting().then((_) => runApp(const MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initializeDateFormatting().then((_) => runApp(MyApp(
+        token: prefs.getString('token'),
+      )));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final token;
+  const MyApp({
+    @required this.token,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +32,14 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.background,
         brightness: Brightness.dark,
       ),
-      initialRoute: AppRoutes.main,
+      // initialRoute: AppRoutes.main,
       //initialRoute: AppRoutes.routingPage,
       //initialRoute: AppRoutes.mapPage,
-      //initialRoute: AppRoutes.login,
-      routes: AppRoutes.pages,
+      // initialRoute: AppRoutes.login,
+      // routes: AppRoutes.pages,
+      home: (token != null && JwtDecoder.isExpired(token) == false)
+          ? MainPage(token: token)
+          : const LoginPage(),
     );
   }
 }

@@ -6,6 +6,7 @@ class AppIcons {
   // menu
   static const icUser = '${_svg}ic_user.svg';
   static const icRefuling = '${_svg}ic_refuling.svg';
+  static const icRefulingWhite = '${_svg}ic_refuling_w.svg';
   static const icAddWhite = '${_svg}ic_add_white.svg';
   static const icAdd = '${_svg}ic_add.svg';
   static const icCar = '${_svg}ic_car.svg';
@@ -18,4 +19,8 @@ class AppIcons {
   static const icSetting = '${_svg}ic_setting.svg';
   static const icLocation = '${_svg}location.svg';
   static const icDoc = '${_svg}doc.svg';
+
+  static const icFix = '${_svg}fix.svg';
+  static const icTool = '${_svg}ic_tool.svg';
+  static const icRepair = '${_svg}repairWhite.svg';
 }

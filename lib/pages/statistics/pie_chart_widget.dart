@@ -25,7 +25,7 @@ class PieChartWidget extends StatelessWidget {
         color: sector.color,
         value: sector.value,
         radius: radius,
-        title: '',
+        title: "${sector.value} р.",
       );
       list.add(data);
     }

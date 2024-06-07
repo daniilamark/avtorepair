@@ -27,7 +27,13 @@ dependencies:
   table_calendar: ^3.1.1
   intl: ^0.19.0
   collection: ^1.17.1
-  
+  galleryimage: ^2.0.1
+  cached_network_image: ^3.3.1
+  photo_view: ^0.15.0
+  # uri_to_file:
+  image_gallery_saver: ^2.0.3
+
+  path_provider: 
 dev_dependencies:
   flutter_test:
     sdk: flutter

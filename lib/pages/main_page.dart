@@ -1,4 +1,9 @@
 // import 'package:avtorepair/pages/car_profile/garage_page.dart';
+// import 'dart:convert';
+
+// import 'package:avtorepair/config/api_config.dart';
+
+import 'package:avtorepair/pages/auth/login_page.dart';
 import 'package:avtorepair/pages/map_page.dart';
 import 'package:avtorepair/pages/refueling/refueling_page.dart';
 //import 'package:avtorepair/pages/routing_page.dart';
@@ -11,94 +16,9 @@ import 'package:avtorepair/components/bottom_navigation_item.dart';
 import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/pages/car_profile/car_profile_page.dart';
 import 'package:avtorepair/styles/app_colors.dart';
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  Menus currentIndex = Menus.carProfile;
-
-  // List<Map<String, dynamic>> _allData = [];
-  // bool _isLoading = true;
-
-  // void _refreshData() async {
-  //   final data = await LocalGarage.getAllData();
-  //   setState(() {
-  //     _allData = data;
-  //     _isLoading = false;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _refreshData();
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    // final arguments = (ModalRoute.of(context)?.settings.arguments ??
-    //     GarageArguments('' as int, '', '', '', '', '', '')) as GarageArguments;
-
-    return Scaffold(
-      extendBody: true,
-      body: pages[currentIndex.index],
-      bottomNavigationBar: MyBottomNavigation(
-        currentIndex: currentIndex,
-        onTap: (value) {
-          setState(
-            () {
-              currentIndex = value;
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  // PAGES CLASSES
-  final pages = [
-    //авто
-    //заправка
-    //сервис
-    //маршруты
-    //статистика
-
-    //car_profile
-    //refueling
-    //service
-    //routing
-    //statistics
-
-    const CarProfilePage(
-        //   index: argu,
-        // brand: '',
-        // model: '',
-        // mileage: '',
-        // yearIssue: '',
-        // typeFuel: '',
-        // transmission: '',
-        ),
-
-    const RefuelingPage(),
-    const ServicePage(),
-    const MapPage(),
-    //const RoutingPage(),
-    const StatisticsPage(),
-  ];
-}
-
-enum Menus {
-  carProfile,
-  refueling,
-  service,
-  routing,
-  statistics,
-}
+// import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBottomNavigation extends StatelessWidget {
   final Menus currentIndex;
@@ -133,7 +53,7 @@ class MyBottomNavigation extends StatelessWidget {
                   Expanded(
                     child: BottomNavigationItem(
                       onPressed: () => onTap(Menus.carProfile),
-                      icon: AppIcons.icUser,
+                      icon: AppIcons.icCar,
                       current: currentIndex,
                       name: Menus.carProfile,
                     ),
@@ -181,11 +101,76 @@ class MyBottomNavigation extends StatelessWidget {
                   color: AppColors.background,
                   shape: BoxShape.circle,
                 ),
-                child: SvgPicture.asset(AppIcons.icCar),
+                child: SvgPicture.asset(AppIcons.icTool),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MainPage extends StatefulWidget {
+  final token;
+  // MainPage(this.email);
+  const MainPage({@required this.token, Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+enum Menus {
+  carProfile,
+  refueling,
+  service,
+  routing,
+  statistics,
+}
+
+class _MainPageState extends State<MainPage> {
+  late String userId;
+  late String email;
+  late SharedPreferences prefsMain;
+
+  Menus currentIndex = Menus.carProfile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+    userId = jwtDecodedToken['_id'];
+    email = jwtDecodedToken['email'].toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+// PAGES CLASSES
+    final pages = [
+      CarProfilePage(
+          token: widget.token ??
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()))),
+
+      const RefuelingPage(),
+      const ServicePage(),
+      const MapPage(),
+      //const RoutingPage(),
+      const StatisticsPage(),
+    ];
+    return Scaffold(
+      extendBody: true,
+      body: pages[currentIndex.index],
+      bottomNavigationBar: MyBottomNavigation(
+        currentIndex: currentIndex,
+        onTap: (value) {
+          setState(
+            () {
+              currentIndex = value;
+            },
+          );
+        },
       ),
     );
   }
