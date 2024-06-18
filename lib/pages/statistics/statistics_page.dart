@@ -235,7 +235,22 @@ class _MyCustomTabState extends State<MyCustomTab> {
                         children: [
                           Row(
                             children: [
-                              const Text("Всего литров: "),
+                              const Text("Всего литров: 900"),
+                              // const Text("Км за год: 120000"),
+                              // Text(getCountFuel()),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              // const Text("Всего литров: 900"),
+                              const Text("Км за неделю: 560"),
+                              // Text(getCountFuel()),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              // const Text("Всего литров: 900"),
+                              const Text("Км за год: 120000"),
                               // Text(getCountFuel()),
                             ],
                           ),

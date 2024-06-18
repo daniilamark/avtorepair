@@ -1,6 +1,7 @@
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/config/app_strings.dart';
+import 'package:avtorepair/pages/service/calendar.dart';
 import 'package:avtorepair/styles/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:avtorepair/config/db_helper.dart';
@@ -382,7 +383,11 @@ class _ServicePageState extends State<ServicePage> {
               color: Color.fromARGB(255, 255, 255, 255),
             ),
             onPressed: () =>
-                Navigator.of(context).pushNamed(AppRoutes.calendarPage),
+                // Navigator.of(context).pushNamed(AppRoutes.calendarPage),
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TableBasicsExample())),
           ),
           IconButton(
             icon: const Icon(

@@ -45,4 +45,6 @@ class AppStrings {
   static const service = 'Сервис';
   static const routingMaps = 'Маршруты';
   static const statistics = 'Статистика';
+
+  static const panelAdmin = 'Админ';
 }

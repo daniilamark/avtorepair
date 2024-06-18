@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:avtorepair/config/api_config.dart';
+import 'package:avtorepair/pages/admin/admin_page.dart';
 import 'package:avtorepair/pages/auth/registration_page.dart';
 import 'package:avtorepair/pages/main_page.dart';
 
 import 'package:flutter/material.dart';
-import 'package:avtorepair/config/app_routes.dart';
+// import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/config/app_strings.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -56,8 +58,22 @@ class _LoginPageState extends State<LoginPage> {
         var myToken = jsonResponse['token'];
         prefs.setString('token', myToken);
         // print('tyt');
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => MainPage(token: myToken)));
+
+        if (JwtDecoder.decode(myToken)['role'].toString() == 'admin') {
+          // print(JwtDecoder.decode(myToken)['role'].toString());
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AdminPage(token: myToken)));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MainPage(token: myToken)));
+        }
+
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => MainPage(token: myToken)));
 
         // Navigator.of(context).pushNamedAndRemoveUntil(
         //   AppRoutes.main,
@@ -74,9 +90,19 @@ class _LoginPageState extends State<LoginPage> {
         // Navigator.push(context,
         //     MaterialPageRoute(builder: (context) => Dashboard(token: myToken)));
       } else {
-        _isNotValidate = true;
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Text(
+        //       'Ошибка в логине или пароле',
+        //     ),
+        //   ),
+        // );
         print('Something went wrong');
       }
+    } else {
+      setState(() {
+        _isNotValidate = true;
+      });
     }
   }
 
@@ -114,11 +140,12 @@ class _LoginPageState extends State<LoginPage> {
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: AppStrings.usermail,
-                    errorText: _isNotValidate ? "Заполните все поля!" : null,
-                    labelText: "Логин",
+                    errorText:
+                        _isNotValidate ? "Введите правильный e-mail!" : null,
+                    labelText: "e-mail",
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(12),
+                        Radius.circular(15),
                       ),
                     ),
                     filled: true,
@@ -134,10 +161,10 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     hintText: AppStrings.userpassword,
                     labelText: "Пароль",
-                    errorText: _isNotValidate ? "Заполните все поля" : null,
+                    errorText: _isNotValidate ? "Введите пароль" : null,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(12),
+                        Radius.circular(15),
                       ),
                     ),
                     filled: true,

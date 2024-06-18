@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:avtorepair/config/api_config.dart';
 import 'package:avtorepair/config/app_icons.dart';
 import 'package:avtorepair/services/local_db/local_refueling.dart';
 import 'package:avtorepair/styles/app_text.dart';
@@ -5,21 +8,48 @@ import 'package:flutter/material.dart';
 import 'package:avtorepair/components/toolbar.dart';
 import 'package:avtorepair/config/app_strings.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 // import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class RefuelingPage extends StatefulWidget {
-  const RefuelingPage({super.key});
+  final token;
+  const RefuelingPage({@required this.token, Key? key}) : super(key: key);
 
   @override
   State<RefuelingPage> createState() => _RefuelingPageState();
+}
+
+Future<List> _getCarsList(userId) async {
+  var headers = {'Content-Type': 'application/json'};
+  var request = http.Request('GET', Uri.parse(getUserCarsList));
+  request.body = json.encode({"userId": userId});
+  request.headers.addAll(headers);
+
+  http.StreamedResponse response = await request.send();
+
+  if (response.statusCode == 200) {
+    var respData = await response.stream.bytesToString();
+    // print(respData);
+    var allData = json.decode(respData);
+    List list = allData['success'];
+
+    return list;
+  } else {
+    print(response.reasonPhrase);
+    throw Exception('Failed to load data');
+  }
 }
 
 class _RefuelingPageState extends State<RefuelingPage> {
   List<Map<String, dynamic>> _allData = [];
   bool _isLoading = true;
 
+  late String userId;
+  List itemsCars = [];
+
   String dropdownvalue = '95 бензин';
-  String dropdownvalueCar = 'ВАЗ 2110';
+  var dropdownvalueCar = '';
   // List of items in our dropdown menu
   var items = [
     '92 бензин',
@@ -28,11 +58,15 @@ class _RefuelingPageState extends State<RefuelingPage> {
     'Электро',
   ];
 
-  var itemsCar = [
-    'ВАЗ 2110',
-    'Ауди',
-    'Беларус',
-  ];
+  // var itemsCar = [
+  //   'ВАЗ 2110',
+  //   'Ауди',
+  //   'Беларус',
+  // ];
+
+  List<String> itemsCarD = [];
+
+  List<DropdownMenuItem<String>> itemsCar = [];
 
   void _refreshData() async {
     final data = await LocalRefueling.getAllData();
@@ -47,6 +81,16 @@ class _RefuelingPageState extends State<RefuelingPage> {
   void initState() {
     super.initState();
     _refreshData();
+
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+    userId = jwtDecodedToken['_id'];
+    // email = jwtDecodedToken['email'].toString();
+
+    _getCarsList(userId).then((result) {
+      setState(() {
+        itemsCars = result;
+      });
+    });
   }
 
   Future<void> _addData() async {
@@ -61,6 +105,8 @@ class _RefuelingPageState extends State<RefuelingPage> {
         _commentController.text);
     _refreshData();
   }
+
+  Future<void> getList() async {}
 
   Future<void> _updateData(int id) async {
     await LocalRefueling.updateData(
@@ -106,11 +152,35 @@ class _RefuelingPageState extends State<RefuelingPage> {
   final TextEditingController _commentController = TextEditingController();
 
   void showBottomSheet(int? id, int index) async {
+    // _getCarsList(userId).then((result) {
+    //   setState(() {
+    //     itemsCar = result;
+    //   });
+    // });
+    // var itemsCarD = [];
+    // List<DropdownMenuItem<String>> itemsCar = [];
+
+    for (int indexx = 0; indexx < itemsCars.length; indexx++) {
+      // print(itemsCars[index]['brand'] + " " + itemsCars[index]['model']);
+      String car =
+          itemsCars[indexx]['brand'] + " " + itemsCars[indexx]['model'];
+      itemsCarD.add(car);
+      print(car);
+    }
+    if (id == null) {
+      dropdownvalueCar = itemsCarD[0];
+    }
+    // for (var item in itemsCarD) {
+    //   itemsCar.add(DropdownMenuItem<String>(value: item, child: Text(item)));
+    //   print(itemsCar);
+    // }
+
     if (id != null) {
       final existingData =
           _allData.firstWhere((element) => element['id'] == id);
       dropdownvalue = existingData['typeFuel'];
       // _autoCarController.text = existingData['autoCar'];
+      dropdownvalueCar = existingData['autoCar'];
       _countController.text = existingData['count'].toString();
       _summaController.text = existingData['summa'].toString();
       _addressController.text = existingData['address'];
@@ -151,13 +221,13 @@ class _RefuelingPageState extends State<RefuelingPage> {
                     // icon: SvgPicture.asset(AppIcons.icCar),
                     icon: const Icon(Icons.arrow_drop_down),
                     // Array list of items
-                    items: itemsCar.map((String items) {
+                    items: itemsCarD.map((String items) {
                       return DropdownMenuItem(
                         value: items,
                         child: Text(
-                          items,
+                          items.toString(),
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -165,7 +235,7 @@ class _RefuelingPageState extends State<RefuelingPage> {
                     }).toList(),
                     // After selecting the desired option,it will
                     // change button value to selected value
-                    onChanged: (String? newValue) {
+                    onChanged: (var newValue) {
                       setState(() {
                         dropdownvalueCar = newValue!.toString();
                       });
@@ -176,6 +246,7 @@ class _RefuelingPageState extends State<RefuelingPage> {
                   height: 30,
                   width: 30,
                 ),
+                //////////////////////////////////////////////////////////////////////
                 Container(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   decoration: BoxDecoration(
@@ -206,8 +277,9 @@ class _RefuelingPageState extends State<RefuelingPage> {
                     // change button value to selected value
                     onChanged: (String? newValue) {
                       setState(() {
-                        dropdownvalue = newValue!.toString();
+                        dropdownvalue = newValue.toString();
                       });
+                      // setState(() {});
                     },
                   ),
                 ),

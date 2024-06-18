@@ -1,6 +1,7 @@
 // import 'package:avtorepair/pages/car_profile/car_profile_page.dart';
 import 'dart:convert';
 
+
 // import 'package:avtorepair/components/user_avatar.dart';
 import 'package:avtorepair/config/api_config.dart';
 // import 'package:avtorepair/services/local_db/local_garage.dart';
@@ -749,11 +750,13 @@ class _GaragePageState extends State<GaragePage> {
                               // onPressed: () async {
                               onPressed: () async {
                                 avto = itemsCars[index]['brand'];
-                                await prefs.setString('mainAvto', avto!);
 
-                                idMainAvto = itemsCars[index]['_id'];
-                                await prefs.setInt('idMainAvto', index);
+                                // idMainAvto = itemsCars[index]['_id'] as int;
+                                idMainAvto = index;
+                                await prefs.setString('mainAvto', avto!);
+                                await prefs.setInt('idMainAvto', idMainAvto!);
                                 setState(() {});
+                                // Navigator.pop(context, true);
                               },
                               icon: const Icon(
                                 Icons.check_box,

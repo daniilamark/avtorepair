@@ -6,7 +6,7 @@ import 'package:avtorepair/pages/car_profile/doc_page.dart';
 import 'package:avtorepair/pages/map_page.dart';
 import 'package:avtorepair/pages/auth/registration_page.dart';
 import 'package:avtorepair/pages/map/routing_page.dart';
-import 'package:avtorepair/pages/service/calendar.dart';
+// import 'package:avtorepair/pages/service/calendar.dart';
 
 class AppRoutes {
   static final pages = {
@@ -21,7 +21,7 @@ class AppRoutes {
 
     garagePage: (context) => const GaragePage(),
     settingsPage: (context) => const DocPage(),
-    calendarPage: (context) => const TableBasicsExample(),
+    // calendarPage: (context) => const TableBasicsExample(),
   };
 
   static const login = '/';
@@ -35,5 +35,5 @@ class AppRoutes {
   static const garagePage = '/garage';
   static const settingsPage = '/settings';
 
-  static const calendarPage = '/calendar';
+  // static const calendarPage = '/calendar';
 }

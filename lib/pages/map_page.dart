@@ -82,15 +82,10 @@ class _MapPageState extends State<MapPage> {
         },
         onMapTap: (argument) {
           setState(() {
-            // добавляем точку на
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  // icon: Icon(
-                  //   Icons.map_outlined,
-                  //   color: Color.fromARGB(255, 255, 255, 255),
-                  // ),
                   scrollable: true,
                   title: const Text("Добавить"),
                   content: Padding(
@@ -159,7 +154,6 @@ class _MapPageState extends State<MapPage> {
               );
             }
           });
-
           _buildRoutes();
         },
         mapObjects: [

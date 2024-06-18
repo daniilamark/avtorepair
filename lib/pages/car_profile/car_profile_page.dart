@@ -6,7 +6,7 @@
 import 'dart:convert';
 
 import 'package:avtorepair/config/api_config.dart';
-import 'package:avtorepair/config/app_routes.dart';
+// import 'package:avtorepair/config/app_routes.dart';
 import 'package:avtorepair/pages/auth/login_page.dart';
 import 'package:avtorepair/pages/car_profile/doc_page.dart';
 import 'package:avtorepair/pages/car_profile/edit_profile_page.dart';
@@ -62,33 +62,42 @@ Future<List> _getCarsList(userId) async {
 class _CarProfilePageState extends State<CarProfilePage> {
   late String userId;
   late String email;
-  int? idMainAvto;
+  int idMainAvto = 0;
   List itemsCars = [];
 
+  bool _isLoading = true;
   late SharedPreferences prefs;
   // List<Map<String, dynamic>> _allData = [];
   // bool _isLoading = false;
 //
-  void _refreshData() async {
-    // final data = await LocalGarage.getAllData();
-    setState(
-      () {
-        // _allData = data;
-        // _isLoading = true;
-      },
-    );
-  }
+  // void _refreshData() async {
+  //   // final data = await LocalGarage.getAllData();
+  //   setState(
+  //     () {
+  //       // _allData = data;
+  //       // _isLoading = true;
+  //     },
+  //   );
+  // }
 
-  void initSharedPref() async {
+  Future initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
-    idMainAvto = prefs.getInt('idMainAvto');
+
+    idMainAvto = prefs.getInt('idMainAvto')!;
+    _isLoading = false;
+    return idMainAvto;
   }
 
   @override
   void initState() {
     super.initState();
-    _refreshData();
-    initSharedPref();
+    // _refreshData();
+    initSharedPref().then((result) {
+      setState(() {
+        // itemsCars = result;
+        idMainAvto = result;
+      });
+    });
 
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     userId = jwtDecodedToken['_id'];
@@ -99,6 +108,9 @@ class _CarProfilePageState extends State<CarProfilePage> {
         itemsCars = result;
       });
     });
+
+    // print("7777777777777777777777");
+    // print(itemsCars[prefs.getInt('idMainAvto')!]['brand']);
   }
 
   // void getUserByEmail() async {
@@ -169,7 +181,24 @@ class _CarProfilePageState extends State<CarProfilePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GaragePage(token: widget.token!))),
+                      builder: (context) =>
+                          GaragePage(token: widget.token!))).then(
+                (value) => initSharedPref().then(
+                  (result) {
+                    setState(
+                      () {
+                        // itemsCars = result;
+                        idMainAvto = result;
+                        _getCarsList(userId).then((result) {
+                          setState(() {
+                            itemsCars = result;
+                          });
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
             },
           ),
           IconButton(
@@ -215,297 +244,339 @@ class _CarProfilePageState extends State<CarProfilePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                UserAvatar(
-                  size: 120,
-                ),
-                CarAvatar(
-                  size: 120,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Text(
-              email,
-              style: AppText.header2,
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  // _allData[0]['brand'],\
-                  // int idMainAvto = ;
-                  itemsCars[prefs.getInt('idMainAvto')!]['brand'],
-                  // "",
-                  // _allData[arguments.index]['brand'].isNull
-                  //     ? 'пусто'
-                  //     : 'пусто',
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      UserAvatar(
+                        size: 120,
+                      ),
+                      CarAvatar(
+                        size: 120,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Text(
+                    email,
+                    style: AppText.header2,
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        // _allData[0]['brand'],\
+                        // int idMainAvto = ;
+                        (itemsCars.isNotEmpty
+                            ? itemsCars[idMainAvto]['brand']
+                            : ''),
+                        // itemsCars[idMainAvto]['brand'],
+                        // "",
+                        // _allData[arguments.index]['brand'].isNull
+                        //     ? 'пусто'
+                        //     : 'пусто',
 
-                  style: AppText.header2,
-                ),
-                Text(
-                  // _allData[0]['model'],
-                  itemsCars[prefs.getInt('idMainAvto')!]['model'],
-                  // "",
-                  // _allData[arguments.index]['brand'].isNull
-                  //     ? 'пусто'
-                  //     : 'пусто',
+                        style: AppText.header2,
+                      ),
+                      Text(
+                        // _allData[0]['model'],
+                        // itemsCars[idMainAvto!]['model'],
+                        // "",
+                        (itemsCars.isNotEmpty
+                            ? itemsCars[idMainAvto]['number']
+                            : ''),
+                        // _allData[arguments.index]['brand'].isNull
+                        //     ? 'пусто'
+                        //     : 'пусто',
 
-                  style: AppText.header2,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+                        style: AppText.header2,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
 
-            // марка модель
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['brand'],
-                      // _allData[arguments.index]['brand'].isNull
-                      //     ? 'пусто'
-                      //     : 'пусто',
+                  // марка модель
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['brand']
+                                : ''),
+                            // "",
+                            // _allData[0]['brand'],
+                            // _allData[arguments.index]['brand'].isNull
+                            //     ? 'пусто'
+                            //     : 'пусто',
 
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Марка",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['model'],
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Модель",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Марка",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['model']
+                                : ''),
+                            // _allData[0]['model'],
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Модель",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
 
-            // год пробег
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['mileage'],
-                      //_allData[arguments]['mileage'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Пробег",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['yearIssue'],
-                      //_allData[arguments.index]['yearIssue'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Год выпуска",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+                  // год пробег
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['mileage']
+                                : ''),
+                            // _allData[0]['mileage'],
+                            //_allData[arguments]['mileage'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Пробег",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['yearIssue']
+                                : ''),
+                            // _allData[0]['yearIssue'],
+                            //_allData[arguments.index]['yearIssue'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Год выпуска",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
 
-            // кпп двигатель
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['transmission'],
-                      //_allData[arguments.index]['transmission'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Коробка передач",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['typeFuel'],
-                      // _allData[arguments.index]['typeFuel'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Двигатель",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
-            //
+                  // кпп двигатель
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['transmission']
+                                : ''),
+                            // _allData[0]['transmission'],
+                            //_allData[arguments.index]['transmission'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Коробка передач",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['typeFuel']
+                                : ''),
+                            // _allData[0]['typeFuel'],
+                            // _allData[arguments.index]['typeFuel'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Двигатель",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
+                  //
 
-            // КУЗОВ ПРИВОД
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['carBody'],
-                      //_allData[arguments.index]['carBody'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Кузов",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['engineVolume'],
-                      //_allData[arguments.index]['engineVolume'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Объем двигателя",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+                  // КУЗОВ ПРИВОД
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['carBody']
+                                : ''),
+                            // _allData[0]['carBody'],
+                            //_allData[arguments.index]['carBody'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Кузов",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['engineVolume']
+                                : ''),
+                            // _allData[0]['engineVolume'],
+                            //_allData[arguments.index]['engineVolume'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Объем двигателя",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
 
-            // мощность двигателя объем бака
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['enginePower'],
-                      // _allData[arguments.index]['enginePower'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Мощность",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['volumeTank'],
-                      // _allData[arguments.index]['volumeTank'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "Объем бака",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+                  // мощность двигателя объем бака
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['enginePower']
+                                : ''),
+                            // _allData[0]['enginePower'],
+                            // _allData[arguments.index]['enginePower'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Мощность",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['volumeTank']
+                                : ''),
+                            // _allData[0]['volumeTank'],
+                            // _allData[arguments.index]['volumeTank'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "Объем бака",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
 
-            // VIN
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "",
-                      // _allData[0]['vin'],
+                  // VIN
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            // "",
+                            (itemsCars.isNotEmpty
+                                ? itemsCars[idMainAvto]['vin']
+                                : ''),
+                            // _allData[0]['vin'],
 
-                      // _allData[arguments.index]['vin'].isEmpty ?? "1",
-                      style: AppText.header2,
-                    ),
-                    Text(
-                      "VIN",
-                      style: AppText.subtitle3,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Divider(
-              thickness: 1,
-              height: 24,
-            ),
+                            // _allData[arguments.index]['vin'].isEmpty ?? "1",
+                            style: AppText.header2,
+                          ),
+                          Text(
+                            "VIN",
+                            style: AppText.subtitle3,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 24,
+                  ),
 
-            SizedBox(
-              height: 120,
+                  SizedBox(
+                    height: 120,
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

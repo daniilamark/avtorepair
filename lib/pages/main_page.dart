@@ -151,9 +151,12 @@ class _MainPageState extends State<MainPage> {
       CarProfilePage(
           token: widget.token ??
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()))),
-
-      const RefuelingPage(),
+                  MaterialPageRoute(builder: (context) => const LoginPage()))),
+      RefuelingPage(
+          token: widget.token ??
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()))),
+      // const RefuelingPage(),
       const ServicePage(),
       const MapPage(),
       //const RoutingPage(),
